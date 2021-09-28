@@ -156,7 +156,7 @@ static GtkActionEntry menu_items[] =
 #define MENUBAR_MENUITEM_COUNT G_N_ELEMENTS(menu_items)
 static const GtkToggleActionEntry toggle_action_entries[] =
 {
-/* 0 */    { "View_Fullscreen", "Fullscreen", N_("_Fullscreen"), NULL, "Fullscreen", G_CALLBACK(terminal_window_action_fullscreen), FALSE, },
+/* 0 */    { "View_Fullscreen", "Fullscreen", N_("_Fullscreen"), "F11", "Fullscreen", G_CALLBACK(terminal_window_action_fullscreen), FALSE, },
 };
 
 
