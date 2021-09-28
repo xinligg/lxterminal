@@ -18,6 +18,9 @@
       <separator/>
       <menuitem name="Edit_Preferences" action="Edit_Preferences"/>
     </menu>
+    <menu name="View" action="View">
+      <menuitem name="View_Fullscreen" action="View_Fullscreen"/>
+    </menu>
     <menu name="Tabs" action="Tabs">
       <menuitem name="Tabs_NameTab" action="Tabs_NameTab"/>
       <menuitem name="Tabs_PreviousTab" action="Tabs_PreviousTab"/>

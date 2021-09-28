@@ -75,6 +75,7 @@ static void terminal_zoom(LXTerminal * terminal);
 static gboolean terminal_zoom_in_activate_event(GtkAction * action, LXTerminal * terminal);
 static gboolean terminal_zoom_out_activate_event(GtkAction * action, LXTerminal * terminal);
 static gboolean terminal_zoom_reset_activate_event(GtkAction * action, LXTerminal * terminal);
+static void terminal_window_action_fullscreen(GtkToggleAction* action, LXTerminal * terminal);
 static void terminal_about_activate_event(GtkAction * action, LXTerminal * terminal);
 
 /* Window creation, destruction, and control. */
@@ -128,6 +129,7 @@ static GtkActionEntry menu_items[] =
 {
 /* 0 */    { "File", NULL, N_("_File"), NULL, NULL, NULL },
 /* 1 */    { "Edit", NULL, N_("_Edit"), NULL, NULL, NULL },
+/*   */    { "View", NULL, N_("_View"), NULL, NULL, NULL },
 /* 2 */    { "Tabs", NULL, N_("_Tabs"), NULL, NULL, NULL },
 /* 3 */    { "Help", NULL, N_("_Help"), NULL, NULL, NULL },
 /* 4 */    { "File_NewWindow", "list-add", N_("_New Window"), NEW_WINDOW_ACCEL_DEF, "New Window", G_CALLBACK(terminal_new_window_activate_event) },
@@ -152,6 +154,11 @@ static GtkActionEntry menu_items[] =
 /* 23 */    { "Help_About", "help-about", N_("_About"), NULL, "About", G_CALLBACK(terminal_about_activate_event) },
 };
 #define MENUBAR_MENUITEM_COUNT G_N_ELEMENTS(menu_items)
+static const GtkToggleActionEntry toggle_action_entries[] =
+{
+/* 0 */    { "View_Fullscreen", "Fullscreen", N_("_Fullscreen"), NULL, "Fullscreen", G_CALLBACK(terminal_window_action_fullscreen), FALSE, },
+};
+
 
 /* Descriptors for popup menu items, accessed via right click on the terminal. */
 static GtkActionEntry vte_menu_items[] =
@@ -761,6 +768,25 @@ static gboolean terminal_zoom_reset_activate_event(GtkAction * action, LXTermina
     return FALSE;
 }
 
+static void
+terminal_window_action_fullscreen(GtkToggleAction* action, LXTerminal * terminal)
+{
+  gboolean fullscreen;
+
+  if (gtk_widget_get_visible (GTK_WIDGET (terminal->window)))
+    {
+G_GNUC_BEGIN_IGNORE_DEPRECATIONS
+      fullscreen = gtk_toggle_action_get_active (action);
+G_GNUC_END_IGNORE_DEPRECATIONS
+      if (fullscreen)
+        gtk_window_fullscreen (GTK_WINDOW (terminal->window));
+      else
+        {
+          gtk_window_unfullscreen (GTK_WINDOW (terminal->window));
+        }
+    }
+}
+
 /* Handler for "activate" signal on Help/About menu item. */
 static void terminal_about_activate_event(GtkAction * action, LXTerminal * terminal)
 {
@@ -978,6 +1004,7 @@ static void terminal_show_popup_menu(VteTerminal * vte, GdkEventButton * event, 
     GtkActionGroup * action_group = gtk_action_group_new("VTEMenu");
     gtk_action_group_set_translation_domain(action_group, GETTEXT_PACKAGE);
     gtk_action_group_add_actions(action_group, vte_menu_items, VTE_MENUITEM_COUNT, term->parent);
+
     gtk_ui_manager_insert_action_group(manager, action_group, 0);
 
     guint merge_id = gtk_ui_manager_new_merge_id(manager);
@@ -1399,6 +1426,7 @@ static void terminal_menubar_initialize(LXTerminal * terminal)
     /* modify accelerators by setting */
     terminal_initialize_menu_shortcuts(get_setting());
     gtk_action_group_add_actions(terminal->action_group, menu_items, MENUBAR_MENUITEM_COUNT, terminal);
+    gtk_action_group_add_toggle_actions (terminal->action_group, toggle_action_entries, G_N_ELEMENTS (toggle_action_entries), terminal);
     gtk_ui_manager_insert_action_group(manager, terminal->action_group, 0);
     
     gtk_ui_manager_add_ui_from_file (manager, PACKAGE_DATA_DIR "/lxterminal/menu.ui", NULL);
@@ -1884,6 +1912,8 @@ void terminal_update_menu_shortcuts(Setting * setting)
     gtk_accelerator_parse(setting->zoom_reset_accel, &key, &mods);
     gtk_accel_map_change_entry("<Actions>/MenuBar/Edit_ZoomReset", key, mods, FALSE);
     gtk_accelerator_parse(setting->name_tab_accel, &key, &mods);
+    gtk_accel_map_change_entry("<Actions>/MenuBar/View_Fullscreen", key, mods, FALSE);
+    gtk_accelerator_parse(setting->previous_tab_accel, &key, &mods);
     gtk_accel_map_change_entry("<Actions>/MenuBar/Tabs_NameTab", key, mods, FALSE);
     gtk_accelerator_parse(setting->previous_tab_accel, &key, &mods);
     gtk_accel_map_change_entry("<Actions>/MenuBar/Tabs_PreviousTab", key, mods, FALSE);
