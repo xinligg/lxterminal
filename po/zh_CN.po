@@ -24,6 +24,9 @@ msgstr "文件(_F)"
 msgid "_Edit"
 msgstr "编辑(_E)"
 
+msgid "_View"
+msgstr "查看(_V)"
+
 #. 2
 #: ../src/lxterminal.c:123
 msgid "_Tabs"
@@ -137,6 +140,9 @@ msgstr "复制 _URL"
 #: ../src/lxterminal.c:158
 msgid "Cl_ear scrollback"
 msgstr "清除回滚(_E)"
+
+msgid "_Fullscreen"
+msgstr "全屏(_F)"
 
 #: ../src/lxterminal.c:567 ../data/lxterminal-preferences.glade.h:54
 msgid "Name Tab"
