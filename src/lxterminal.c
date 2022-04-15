@@ -129,7 +129,6 @@ static GtkActionEntry menu_items[] =
 {
 /* 0 */    { "File", NULL, N_("_File"), NULL, NULL, NULL },
 /* 1 */    { "Edit", NULL, N_("_Edit"), NULL, NULL, NULL },
-/*   */    { "View", NULL, N_("_View"), NULL, NULL, NULL },
 /* 2 */    { "Tabs", NULL, N_("_Tabs"), NULL, NULL, NULL },
 /* 3 */    { "Help", NULL, N_("_Help"), NULL, NULL, NULL },
 /* 4 */    { "File_NewWindow", "list-add", N_("_New Window"), NEW_WINDOW_ACCEL_DEF, "New Window", G_CALLBACK(terminal_new_window_activate_event) },
@@ -152,6 +151,7 @@ static GtkActionEntry menu_items[] =
 /* 21 */    { "Tabs_MoveTabLeft", NULL, N_("Move Tab _Left"), MOVE_TAB_LEFT_ACCEL_DEF, "Move Tab Left", G_CALLBACK(terminal_move_tab_left_activate_event) },
 /* 22 */    { "Tabs_MoveTabRight", NULL, N_("Move Tab _Right"), MOVE_TAB_RIGHT_ACCEL_DEF, "Move Tab Right", G_CALLBACK(terminal_move_tab_right_activate_event) },
 /* 23 */    { "Help_About", "help-about", N_("_About"), NULL, "About", G_CALLBACK(terminal_about_activate_event) },
+/*   */    { "View", NULL, N_("_View"), NULL, NULL, NULL },
 };
 #define MENUBAR_MENUITEM_COUNT G_N_ELEMENTS(menu_items)
 static const GtkToggleActionEntry toggle_action_entries[] =
